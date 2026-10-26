@@ -144,6 +144,11 @@ Privacy-Aware Data Engineering Pipeline
 
 ## Troubleshooting
 
+### Build Fails with "Unable to locate package"
+- **Cause:** `packages.txt` with comments or invalid content
+- **Fix:** Delete `packages.txt` if you don't need system packages
+- **Note:** We deleted this file - not needed for this project
+
 ### Build Fails
 - Check build logs in Streamlit Cloud dashboard
 - Verify requirements.txt has all dependencies
