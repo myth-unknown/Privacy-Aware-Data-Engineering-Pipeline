@@ -7,6 +7,9 @@
 .\run_app.ps1
 ```
 
+.\start.ps1
+
+
 ### Option 2: Manual
 ```powershell
 .\venv\Scripts\Activate.ps1

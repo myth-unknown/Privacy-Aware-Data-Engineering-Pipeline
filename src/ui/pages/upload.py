@@ -114,19 +114,20 @@ def render():
 
         # Save to session state
         if st.button("✅ Accept and Continue", type="primary", use_container_width=True):
-            st.session_state["uploaded_data"] = df
-            st.session_state["uploaded_file_name"] = uploaded_file.name
-            st.session_state["ingestion_result"] = df_result
-            st.session_state["scroll_to_top"] = True  # Flag to scroll to top on next page
+            with st.spinner("💾 Saving data to session..."):
+                st.session_state["uploaded_data"] = df
+                st.session_state["uploaded_file_name"] = uploaded_file.name
+                st.session_state["ingestion_result"] = df_result
+                st.session_state["scroll_to_top"] = True  # Flag to scroll to top on next page
 
-            # Clear downstream cached results when new data is uploaded
-            for key in ["quality_profile", "pii_detections", "anonymized_data"]:
-                if key in st.session_state:
-                    del st.session_state[key]
+                # Clear downstream cached results when new data is uploaded
+                for key in ["quality_profile", "pii_detections", "anonymized_data"]:
+                    if key in st.session_state:
+                        del st.session_state[key]
+
+                logger.info(f"Data saved to session state: {uploaded_file.name}")
 
             st.success("✅ Data uploaded successfully!")
-            logger.info(f"Data saved to session state: {uploaded_file.name}")
-
             st.info("📌 Next: Go to **Data Quality** page to analyze your dataset.")
 
         # Clean up temp file
@@ -217,20 +218,82 @@ def _display_data_preview(df: pd.DataFrame, result):
 
 
 def _render_sample_data_section():
-    """Render section with links to sample data."""
+    """Render section with download buttons for sample data."""
     st.markdown("---")
     st.subheader("📁 Sample Data")
     st.markdown(
         """
-        Don't have a dataset ready? You can use our sample datasets to explore the pipeline:
-
-        - **customers.csv**: Customer information with PII (email, phone, address)
-        - **orders.json**: Order data with various PII types
-        - **malformed.csv**: Dataset with quality issues for testing validation
-
-        Sample files are located in the `data/samples/` directory.
+        Don't have a dataset ready? Download our sample datasets to explore the pipeline:
         """
     )
+    
+    # Check if sample files exist
+    import os
+    from pathlib import Path
+    
+    sample_dir = Path("data/samples")
+    
+    # Sample files with descriptions
+    samples = [
+        {
+            "file": "test_employee_data.csv",
+            "name": "Employee Data (Recommended)",
+            "icon": "👥",
+            "description": "15 employees with 14 columns including SSN, emails, phones, salary (90 PII instances)",
+        },
+        {
+            "file": "customers.csv",
+            "name": "Customer Information",
+            "icon": "🛒",
+            "description": "Customer data with PII (email, phone, address)",
+        },
+        {
+            "file": "orders.json",
+            "name": "Order Data (JSON)",
+            "icon": "📦",
+            "description": "Order data in JSON format with various PII types",
+        },
+        {
+            "file": "malformed.csv",
+            "name": "Malformed Data",
+            "icon": "⚠️",
+            "description": "Dataset with quality issues for testing validation",
+        },
+    ]
+    
+    # Create download buttons for each sample
+    for sample in samples:
+        file_path = sample_dir / sample["file"]
+        
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown(f"**{sample['icon']} {sample['name']}**")
+            st.caption(sample["description"])
+        
+        with col2:
+            if file_path.exists():
+                # Read file data
+                with open(file_path, "rb") as f:
+                    file_data = f.read()
+                
+                st.download_button(
+                    label="📥 Download",
+                    data=file_data,
+                    file_name=sample["file"],
+                    mime="text/csv" if sample["file"].endswith(".csv") else "application/json",
+                    key=f"download_{sample['file']}",
+                    use_container_width=True,
+                )
+            else:
+                st.button(
+                    "❌ Not Found",
+                    disabled=True,
+                    use_container_width=True,
+                    key=f"missing_{sample['file']}",
+                )
+        
+        st.markdown("")  # Add spacing
 
 
 if __name__ == "__main__":

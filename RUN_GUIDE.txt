@@ -1,0 +1,68 @@
+==========================================
+ PRIVACY-AWARE DATA ENGINEERING PIPELINE
+ Quick Run Guide
+==========================================
+
+🚀 EASIEST WAY TO RUN:
+   
+   Windows: Double-click "start.bat"
+   (That's it! Browser opens automatically)
+
+------------------------------------------
+
+📋 ALL RUN OPTIONS:
+
+   Option 1: start.bat          (Double-click - cmd)
+   Option 2: start.ps1          (Double-click - PowerShell)
+   Option 3: run_app.ps1        (Detailed script)
+   Option 4: Type in terminal:  .\start.ps1
+
+------------------------------------------
+
+🧪 TO RUN TESTS:
+
+   Quick:    Double-click "test.bat"
+   Detailed: Run ".\run_tests.ps1"
+
+------------------------------------------
+
+🌐 APP OPENS AT:
+
+   http://localhost:8501
+
+------------------------------------------
+
+⏹️ TO STOP APP:
+
+   Press: Ctrl + C (in terminal)
+
+------------------------------------------
+
+📁 SAMPLE DATA TO TRY:
+
+   data/samples/test_employee_data.csv
+   (Upload this file to test all features)
+
+------------------------------------------
+
+🐛 TROUBLESHOOTING:
+
+   Error: "Virtual environment not found"
+   Fix:   python -m venv venv
+          .\venv\Scripts\activate
+          pip install -r requirements.txt
+
+   Error: PowerShell won't run
+   Fix:   Use start.bat instead!
+
+------------------------------------------
+
+💡 PRO TIP:
+
+   Create a desktop shortcut to start.bat
+   for instant one-click access!
+
+==========================================
+For detailed help: See QUICK_START.md
+For all commands: See COMMANDS.md
+==========================================

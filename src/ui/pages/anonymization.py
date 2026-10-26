@@ -51,6 +51,11 @@ def render():
     if "anonymization_result" not in st.session_state or st.button(
         "🔄 Re-apply Anonymization", use_container_width=True
     ):
+        # Clear cached prepared downloads when re-applying
+        for key in ['prepared_csv', 'prepared_audit']:
+            if key in st.session_state:
+                del st.session_state[key]
+                
         with st.spinner("🎭 Applying anonymization..."):
             _apply_anonymization(df, detections)
 
@@ -276,38 +281,54 @@ def _render_action_buttons(result):
             st.info("📌 Next: Go to **Method Comparison** to compare detection methods.")
 
     with col2:
-        if st.button("📥 Download Anonymized CSV", use_container_width=True):
-            csv = result.data.to_csv(index=False)
+        # Button to trigger download preparation
+        if st.button("📥 Download Anonymized CSV", use_container_width=True, key="prepare_csv"):
+            with st.spinner("🔄 Preparing CSV file..."):
+                csv = result.data.to_csv(index=False)
+                st.session_state['prepared_csv'] = csv
+            
+        # Show download button after preparation
+        if 'prepared_csv' in st.session_state:
             st.download_button(
-                label="Download CSV",
-                data=csv,
+                label="📥 Download CSV",
+                data=st.session_state['prepared_csv'],
                 file_name="anonymized_data.csv",
                 mime="text/csv",
+                type="primary",
+                use_container_width=True,
+                key="download_csv"
             )
 
     with col3:
-        if st.button("📊 Download Audit Report", use_container_width=True):
-            # Create audit report
-            audit_data = []
-            for record in result.audit.records[:100]:  # Limit to 100
-                audit_data.append(
-                    {
-                        "column": record.column,
-                        "row_index": record.row_index,
-                        "pii_type": record.pii_type,
-                        "strategy": record.strategy,
-                        "timestamp": record.timestamp.isoformat(),
-                    }
-                )
+        # Button to trigger audit report preparation
+        if st.button("📊 Download Audit Report", use_container_width=True, key="prepare_audit"):
+            with st.spinner("🔄 Generating audit report..."):
+                # Create audit report
+                audit_data = []
+                for record in result.audit.records[:100]:  # Limit to 100
+                    audit_data.append(
+                        {
+                            "column": record.column,
+                            "row_index": record.row_index,
+                            "pii_type": record.pii_type,
+                            "strategy": record.strategy,
+                            "timestamp": record.timestamp.isoformat(),
+                        }
+                    )
 
-            df_audit = pd.DataFrame(audit_data)
-            csv = df_audit.to_csv(index=False)
-
+                df_audit = pd.DataFrame(audit_data)
+                csv_audit = df_audit.to_csv(index=False)
+                st.session_state['prepared_audit'] = csv_audit
+        
+        # Show download button after preparation
+        if 'prepared_audit' in st.session_state:
             st.download_button(
-                label="Download Audit CSV",
-                data=csv,
+                label="📊 Download Audit CSV",
+                data=st.session_state['prepared_audit'],
                 file_name="transformation_audit.csv",
                 mime="text/csv",
+                use_container_width=True,
+                key="download_audit"
             )
 
 

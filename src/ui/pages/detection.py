@@ -46,6 +46,10 @@ def render():
     if "detection_results" not in st.session_state or st.button(
         "🔄 Re-run Detection", use_container_width=True
     ):
+        # Clear cached prepared export data
+        if 'prepared_export' in st.session_state:
+            del st.session_state['prepared_export']
+            
         with st.spinner("🔍 Scanning for PII..."):
             _run_detection(df)
 
@@ -335,37 +339,45 @@ def _render_action_buttons(detections):
             st.info("📌 Next: Go to **Anonymization** page to transform PII.")
 
     with col2:
-        if st.button("📥 Export Results", use_container_width=True):
-            # Create export DataFrame
-            export_data = []
-            for d in detections:
-                export_data.append(
-                    {
-                        "row_index": d.row_index,
-                        "column": d.column,
-                        "pii_type": d.pii_type,
-                        "value": d.value,
-                        "confidence": d.confidence,
-                        "method": d.detection_method,
-                    }
-                )
+        # Button to trigger export preparation
+        if st.button("📥 Export Results", use_container_width=True, key="prepare_export"):
+            with st.spinner("🔄 Preparing export file..."):
+                # Create export DataFrame
+                export_data = []
+                for d in detections:
+                    export_data.append(
+                        {
+                            "row_index": d.row_index,
+                            "column": d.column,
+                            "pii_type": d.pii_type,
+                            "value": d.value,
+                            "confidence": d.confidence,
+                            "method": d.detection_method,
+                        }
+                    )
 
-            df_export = pd.DataFrame(export_data)
-            csv = df_export.to_csv(index=False)
-
+                df_export = pd.DataFrame(export_data)
+                csv = df_export.to_csv(index=False)
+                st.session_state['prepared_export'] = csv
+        
+        # Show download button after preparation
+        if 'prepared_export' in st.session_state:
             st.download_button(
-                label="Download CSV",
-                data=csv,
+                label="📥 Download CSV",
+                data=st.session_state['prepared_export'],
                 file_name="pii_detections.csv",
                 mime="text/csv",
+                type="primary",
+                use_container_width=True,
+                key="download_export"
             )
 
     with col3:
         if st.button("🗑️ Clear Results", use_container_width=True):
-            if "detection_results" in st.session_state:
-                del st.session_state.detection_results
-            if "detection_summary" in st.session_state:
-                del st.session_state.detection_summary
+            # Clear session state including prepared exports
+            for key in ["detection_results", "detection_summary", "prepared_export"]:
+                if key in st.session_state:
+                    del st.session_state[key]
             st.rerun()
 
 

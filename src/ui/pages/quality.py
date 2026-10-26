@@ -118,14 +118,16 @@ def render():
 
     with col1:
         if st.button("✅ Accept Quality Profile", type="primary", use_container_width=True, key="accept_quality"):
+            with st.spinner("💾 Saving quality profile..."):
+                # Scroll to top on next page load
+                st.session_state['scroll_to_top'] = True
             st.success("✅ Quality profile accepted!")
             st.info("📌 Next: Go to **PII Detection** page to identify sensitive data.")
-            # Scroll to top on next page load
-            st.session_state['scroll_to_top'] = True
 
     with col2:
         if st.button("🔄 Regenerate Profile", use_container_width=True):
-            del st.session_state.quality_profile
+            with st.spinner("🔄 Clearing cache..."):
+                del st.session_state.quality_profile
             st.rerun()
 
     with col3:
