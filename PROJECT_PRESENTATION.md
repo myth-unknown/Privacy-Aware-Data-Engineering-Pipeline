@@ -468,7 +468,7 @@ python -m streamlit run app.py
 
 ---
 
-## 🎓 For Your EDISS Portfolio
+## 🎓 Portfolio Highlights
 
 ### Why This Project is Strong
 
@@ -573,21 +573,22 @@ It's a **complete, professional-grade system** that solves real problems!
 ✅ **Research-Based**: Built on academic and industry best practices  
 ✅ **Production Ready**: Can be deployed and used immediately  
 
-### Perfect for EDISS Because
+### Perfect for Professional Portfolio
 
 - Shows advanced technical skills
 - Addresses current industry problem
 - Demonstrates research capability
 - Includes comprehensive documentation
 - Has real-world applicability
+- Production-ready implementation
 
 ---
 
-**You built something impressive!** 🚀
+**This is an impressive achievement!** 🚀
 
-This isn't just a school project - it's a **professional-grade privacy engineering system** that companies would actually use.
+This isn't just a demo or prototype - it's a **professional-grade privacy engineering system** that companies would actually use.
 
-**Good luck with your EDISS application!** 🎓
+**Perfect for showcasing technical expertise!** 🎓
 
 ---
 

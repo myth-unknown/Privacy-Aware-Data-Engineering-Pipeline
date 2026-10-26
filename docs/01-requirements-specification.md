@@ -18,9 +18,9 @@ Design and implement a local-first, browser-based application that demonstrates:
 - Professional software development practices
 
 ### 1.2 Target Audience
-- Master's program admission committees (EDISS programme)
 - Technical reviewers and potential employers
 - Data engineering and privacy engineering professionals
+- Open source community
 - The developer (for learning and portfolio demonstration)
 
 ### 1.3 Success Criteria

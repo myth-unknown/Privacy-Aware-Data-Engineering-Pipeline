@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The **Privacy-Aware Data Engineering Pipeline** is a research-oriented software portfolio project designed to demonstrate proficiency in data engineering, privacy-preserving data processing, and experimental evaluation. This project serves as a technical portfolio piece for the European Data Science and Intelligent Systems (EDISS) master's program application.
+The **Privacy-Aware Data Engineering Pipeline** is a research-oriented software portfolio project designed to demonstrate proficiency in data engineering, privacy-preserving data processing, and experimental evaluation. This project serves as a comprehensive technical portfolio piece.
 
 **Core Objective**: Build a local-first, browser-based application that ingests structured datasets, validates data quality, detects personally identifiable information (PII) using both rule-based and NLP-assisted methods, applies privacy transformations, and evaluates detection approaches through reproducible experiments.
 
