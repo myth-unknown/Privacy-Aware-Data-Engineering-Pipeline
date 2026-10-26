@@ -1,0 +1,100 @@
+# Privacy-Aware Data Engineering Pipeline
+# Default Configuration
+
+# Ingestion settings
+ingestion:
+  max_file_size_mb: 50
+  max_rows: 100000
+  allowed_types:
+    - .csv
+    - .json
+  encodings:
+    - utf-8
+    - utf-8-sig
+    - latin-1
+    - cp1252
+
+# Data quality settings
+quality:
+  missing_value_indicators:
+    - null
+    - ""
+    - "N/A"
+    - "NA"
+    - "None"
+    - "null"
+  quality_score_weights:
+    missing_penalty: 0.5
+    duplicate_penalty: 0.3
+    error_penalty: 10.0
+
+# PII Detection settings
+detection:
+  # Rule-based detection
+  rule_based:
+    enabled: true
+    categories:
+      email: true
+      phone: true
+      ssn: true
+      credit_card: true
+      ip_address: true
+    
+  # NLP-assisted detection
+  nlp_assisted:
+    enabled: true
+    model: en_core_web_lg
+    confidence_threshold: 0.5
+    categories:
+      person: true
+      organization: true
+      location: true
+
+# Anonymization settings
+anonymization:
+  default_strategy: mask
+  strategies:
+    email: mask
+    phone: redact
+    ssn: pseudonymize
+    credit_card: mask
+    ip_address: generalize
+    person: redact
+    organization: generalize
+    location: generalize
+  
+  # Strategy-specific settings
+  mask_char: "*"
+  redact_placeholder: "[REDACTED]"
+  generalize_labels:
+    email: "[EMAIL]"
+    phone: "[PHONE]"
+    ssn: "[SSN]"
+    credit_card: "[CC]"
+    ip_address: "[IP]"
+    person: "[NAME]"
+    organization: "[ORG]"
+    location: "[LOCATION]"
+
+# Storage settings
+storage:
+  database_path: data/pipeline.duckdb
+  retention_runs: 50
+  temp_dir: temp
+
+# Logging settings
+logging:
+  level: INFO
+  file: logs/pipeline.log
+  format: "[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s"
+
+# UI settings
+ui:
+  page_size: 25
+  max_preview_rows: 100
+  chart_height: 400
+  theme:
+    primary_color: "#2E5CFF"
+    background_color: "#FFFFFF"
+    secondary_background_color: "#F9FAFB"
+    text_color: "#111827"
