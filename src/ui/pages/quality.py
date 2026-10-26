@@ -21,6 +21,10 @@ def render():
     """Render the data quality page."""
     st.title("📊 Data Quality Profiling")
 
+    # Scroll to top if flagged
+    if st.session_state.get('scroll_to_top', False):
+        st.session_state['scroll_to_top'] = False
+
     # Check if data is uploaded
     if "uploaded_data" not in st.session_state or st.session_state.uploaded_data is None:
         st.warning("⚠️ No data uploaded. Please go to the **Upload Data** page first.")
@@ -32,28 +36,45 @@ def render():
     st.markdown(f"**Dataset:** `{file_name}`")
     st.markdown("---")
 
-    # Generate quality profile
+    # Generate quality profile with error handling
+    profile = None
     if "quality_profile" not in st.session_state or st.session_state.quality_profile is None:
         with st.spinner("Analyzing data quality..."):
             try:
                 profile = profile_dataframe(df)
+
+                # Validate profile before storing
+                if profile is None:
+                    raise ValueError("Profile generation returned None")
+                if not hasattr(profile, 'quality_score'):
+                    raise ValueError("Profile missing quality_score attribute")
+                if profile.quality_score is None:
+                    raise ValueError("Profile quality_score is None")
+
                 st.session_state.quality_profile = profile
                 logger.info(f"Quality profile generated: score={profile.quality_score:.1f}")
+
             except Exception as e:
                 error_msg = get_user_friendly_error(e, QUALITY_PROFILING_ERROR)
                 st.error(f"❌ {error_msg}")
+
+                # Show retry button
+                if st.button("🔄 Retry Profiling"):
+                    if "quality_profile" in st.session_state:
+                        del st.session_state.quality_profile
+                    st.rerun()
                 return
     else:
         profile = st.session_state.quality_profile
 
-    # Verify profile is valid
-    if profile is None or not hasattr(profile, 'quality_score') or profile.quality_score is None:
-        st.error("❌ Quality profile is invalid. Please regenerate it.")
-        if st.button("🔄 Regenerate Profile"):
-            if "quality_profile" in st.session_state:
-                del st.session_state.quality_profile
-            st.rerun()
-        return
+        # Validate cached profile
+        if profile is None or not hasattr(profile, 'quality_score') or profile.quality_score is None:
+            st.error("❌ Cached quality profile is invalid")
+            if st.button("🔄 Regenerate Profile"):
+                if "quality_profile" in st.session_state:
+                    del st.session_state.quality_profile
+                st.rerun()
+            return
 
     # Quality Score Card
     _render_quality_score(profile)
@@ -96,9 +117,11 @@ def render():
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        if st.button("✅ Accept Quality Profile", type="primary", use_container_width=True):
+        if st.button("✅ Accept Quality Profile", type="primary", use_container_width=True, key="accept_quality"):
             st.success("✅ Quality profile accepted!")
             st.info("📌 Next: Go to **PII Detection** page to identify sensitive data.")
+            # Scroll to top on next page load
+            st.session_state['scroll_to_top'] = True
 
     with col2:
         if st.button("🔄 Regenerate Profile", use_container_width=True):

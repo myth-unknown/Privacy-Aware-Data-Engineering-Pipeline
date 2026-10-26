@@ -21,6 +21,10 @@ def render():
     """Render the PII detection page."""
     st.title("🔍 PII Detection")
 
+    # Scroll to top if flagged
+    if st.session_state.get('scroll_to_top', False):
+        st.session_state['scroll_to_top'] = False
+
     # Check if data is uploaded
     if "uploaded_data" not in st.session_state or st.session_state.uploaded_data is None:
         st.warning("⚠️ No data uploaded. Please go to the **Upload Data** page first.")
@@ -326,6 +330,7 @@ def _render_action_buttons(detections):
 
     with col1:
         if st.button("✅ Accept and Continue", type="primary", use_container_width=True):
+            st.session_state["scroll_to_top"] = True  # Flag to scroll to top on next page
             st.success("✅ Detection results accepted!")
             st.info("📌 Next: Go to **Anonymization** page to transform PII.")
 

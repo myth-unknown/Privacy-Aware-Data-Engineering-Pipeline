@@ -117,6 +117,7 @@ def render():
             st.session_state["uploaded_data"] = df
             st.session_state["uploaded_file_name"] = uploaded_file.name
             st.session_state["ingestion_result"] = df_result
+            st.session_state["scroll_to_top"] = True  # Flag to scroll to top on next page
 
             # Clear downstream cached results when new data is uploaded
             for key in ["quality_profile", "pii_detections", "anonymized_data"]:

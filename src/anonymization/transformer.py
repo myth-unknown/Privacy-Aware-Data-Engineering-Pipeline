@@ -145,8 +145,36 @@ class DataTransformer:
                     )
                     audit.add_record(record)
 
-                # Update DataFrame
-                df_anonymized.at[row_idx, column] = transformed_value
+                # Update DataFrame with proper type handling
+                try:
+                    # For numeric columns, try to convert back to numeric
+                    if pd.api.types.is_numeric_dtype(df[column]):
+                        # Try to convert transformed value to numeric
+                        try:
+                            # Remove non-numeric characters if masking
+                            if config.strategy == "mask":
+                                # Keep only digits and decimal point
+                                numeric_str = ''.join(c for c in transformed_value if c.isdigit() or c == '.')
+                                if numeric_str:
+                                    transformed_value = float(numeric_str) if '.' in numeric_str else int(numeric_str)
+                                else:
+                                    # If no digits remain, set to 0 or keep as string
+                                    transformed_value = 0
+                            else:
+                                # For other strategies on numeric columns, convert column to string type
+                                if column not in df_anonymized.select_dtypes(include=['object', 'string']).columns:
+                                    df_anonymized[column] = df_anonymized[column].astype(str)
+                        except (ValueError, TypeError):
+                            # If conversion fails, convert entire column to string
+                            df_anonymized[column] = df_anonymized[column].astype(str)
+
+                    df_anonymized.at[row_idx, column] = transformed_value
+
+                except Exception as type_error:
+                    # Last resort: convert column to object type
+                    logger.warning(f"Type conversion issue for {column}, converting to string: {type_error}")
+                    df_anonymized[column] = df_anonymized[column].astype(str)
+                    df_anonymized.at[row_idx, column] = transformed_value
 
             except Exception as e:
                 error_msg = f"Failed to transform {column}[{row_idx}]: {e}"

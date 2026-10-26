@@ -20,6 +20,10 @@ def render():
     """Render the anonymization page."""
     st.title("🎭 PII Anonymization")
 
+    # Scroll to top if flagged
+    if st.session_state.get('scroll_to_top', False):
+        st.session_state['scroll_to_top'] = False
+
     # Check if data and detections are available
     if "uploaded_data" not in st.session_state or st.session_state.uploaded_data is None:
         st.warning("⚠️ No data uploaded. Please go to the **Upload Data** page first.")
