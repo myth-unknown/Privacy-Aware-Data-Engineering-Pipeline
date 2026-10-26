@@ -3,6 +3,7 @@ Privacy-Aware Data Engineering Pipeline
 Main Streamlit Application Entry Point
 """
 
+import subprocess
 import sys
 import traceback
 
@@ -15,6 +16,30 @@ from src.utils.logger import get_logger
 from src.utils.error_handler import get_user_friendly_error, UNEXPECTED_ERROR
 
 logger = get_logger(__name__)
+
+
+def ensure_spacy_model():
+    """Download spaCy model if not already available (for cloud deployment)."""
+    try:
+        import en_core_web_lg
+        logger.info("spaCy model already available")
+    except ImportError:
+        logger.info("Downloading spaCy model for first deployment...")
+        with st.spinner("📥 Downloading NLP model (first time only, ~500MB)..."):
+            try:
+                subprocess.check_call([
+                    sys.executable, "-m", "spacy", "download", "en_core_web_lg"
+                ])
+                st.success("✅ NLP model downloaded successfully!")
+                logger.info("spaCy model downloaded successfully")
+                st.rerun()
+            except Exception as e:
+                logger.error(f"Failed to download spaCy model: {e}")
+                st.error("❌ Failed to download NLP model. Please check logs.")
+
+
+# Ensure spaCy model is available (important for cloud deployment)
+ensure_spacy_model()
 
 # Configure page
 st.set_page_config(
