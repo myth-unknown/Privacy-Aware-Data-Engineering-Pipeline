@@ -6,7 +6,7 @@ authors = [
     {name = "myth-unknown"}
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12,<3.14"
 license = {text = "MIT"}
 keywords = ["privacy", "data-engineering", "pii-detection", "anonymization", "research"]
 
