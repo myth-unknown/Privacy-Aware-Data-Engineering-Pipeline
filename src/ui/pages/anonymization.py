@@ -156,6 +156,22 @@ def _apply_anonymization(df: pd.DataFrame, detections):
 
 def _render_results(original_df: pd.DataFrame, result):
     """Render anonymization results."""
+    # Validate column preservation
+    original_cols = set(original_df.columns)
+    anonymized_cols = set(result.data.columns)
+    
+    if original_cols != anonymized_cols:
+        missing_cols = original_cols - anonymized_cols
+        extra_cols = anonymized_cols - original_cols
+        
+        st.warning(
+            f"⚠️ **Column Mismatch Detected!** This might indicate an issue.\n\n"
+            f"- Missing columns: {list(missing_cols) if missing_cols else 'None'}\n"
+            f"- Extra columns: {list(extra_cols) if extra_cols else 'None'}"
+        )
+    else:
+        st.success(f"✅ All {len(original_cols)} columns preserved during anonymization")
+    
     # Audit summary
     st.subheader("📊 Transformation Summary")
     _render_audit_summary(result.audit)
@@ -201,6 +217,16 @@ def _render_audit_summary(audit):
     with col4:
         duration = audit.duration_seconds
         st.metric("Duration", f"{duration:.2f}s" if duration else "N/A")
+    
+    # Show detailed breakdown
+    with st.expander("📋 Transformation Details"):
+        st.markdown("**Transformations by Column:**")
+        for col, count in sorted(audit.transformations_by_column.items(), key=lambda x: x[1], reverse=True):
+            st.write(f"- **{col}**: {count} transformation(s)")
+        
+        st.markdown("\n**Transformations by PII Type:**")
+        for pii_type, count in sorted(audit.transformations_by_type.items(), key=lambda x: x[1], reverse=True):
+            st.write(f"- **{pii_type}**: {count} transformation(s)")
 
 
 def _render_transformations_by_type(audit):
@@ -255,18 +281,57 @@ def _render_transformations_by_column(audit):
 
 def _render_comparison(original_df: pd.DataFrame, anonymized_df: pd.DataFrame):
     """Render before/after comparison."""
-    tab1, tab2 = st.tabs(["📋 Original Data", "🎭 Anonymized Data"])
+    # Show column comparison summary
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Original Columns", len(original_df.columns))
+    with col2:
+        st.metric("Anonymized Columns", len(anonymized_df.columns))
+    with col3:
+        preserved = len(set(original_df.columns) & set(anonymized_df.columns))
+        st.metric("Preserved Columns", preserved)
+    
+    tab1, tab2, tab3 = st.tabs(["📋 Original Data", "🎭 Anonymized Data", "🔄 Side-by-Side"])
 
     with tab1:
         st.dataframe(original_df.head(10), use_container_width=True, height=400)
 
     with tab2:
         st.dataframe(anonymized_df.head(10), use_container_width=True, height=400)
+    
+    with tab3:
+        # Show side-by-side comparison of specific columns with PII
+        st.markdown("**Compare PII Columns Before and After:**")
+        
+        # Get columns that had transformations
+        if hasattr(st.session_state, 'anonymization_result'):
+            audit = st.session_state.anonymization_result.audit
+            affected_cols = list(audit.transformations_by_column.keys())[:5]  # Show first 5
+            
+            if affected_cols:
+                comparison_data = []
+                for col in affected_cols:
+                    if col in original_df.columns and col in anonymized_df.columns:
+                        for idx in range(min(5, len(original_df))):  # Show first 5 rows
+                            comparison_data.append({
+                                "Column": col,
+                                "Row": idx,
+                                "Original": str(original_df.at[idx, col])[:50],  # Truncate long values
+                                "Anonymized": str(anonymized_df.at[idx, col])[:50],
+                            })
+                
+                if comparison_data:
+                    df_comparison = pd.DataFrame(comparison_data)
+                    st.dataframe(df_comparison, use_container_width=True, height=400)
+                else:
+                    st.info("No PII transformations to compare")
+            else:
+                st.info("No columns were affected by anonymization")
 
     # Highlight changes
     st.info(
         "💡 **Tip:** Compare the data above to see the anonymization effects. "
-        "PII values have been transformed while maintaining data structure."
+        "PII values have been transformed while maintaining data structure and all columns."
     )
 
 
