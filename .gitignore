@@ -14,6 +14,8 @@ venv/
 *.db
 data/*
 !data/.gitkeep
+!data/samples/
+!data/synthetic/
 
 # Generated reports and temporary files
 reports/*

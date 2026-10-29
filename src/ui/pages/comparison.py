@@ -188,7 +188,7 @@ def _render_metrics_comparison(result):
         )
 
     df_metrics = pd.DataFrame(metrics_data)
-    st.dataframe(df_metrics, use_container_width=True, hide_index=True)
+    st.dataframe(df_metrics, use_container_width=True, hide_index=True, height=300)
 
 
 def _render_detection_counts(result):
@@ -286,7 +286,7 @@ def _render_agreement_analysis(result):
             unique_data.append({"Method": "Hybrid", "Unique": result.unique_to_hybrid})
 
         df_unique = pd.DataFrame(unique_data)
-        st.dataframe(df_unique, use_container_width=True, hide_index=True)
+        st.dataframe(df_unique, use_container_width=True, hide_index=True, height=200)
 
 
 def _render_pii_type_breakdown(result):

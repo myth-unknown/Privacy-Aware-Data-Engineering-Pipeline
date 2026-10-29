@@ -1,0 +1,16 @@
+employee_id,full_name,email,phone_number,ssn,department,salary,address,city,state,zip_code,credit_card,hire_date,manager_email
+E001,Alice Johnson,alice.johnson@company.com,555-123-4567,123-45-6789,Engineering,95000,"123 Tech Street, Suite 100",San Francisco,CA,94102,4532-1234-5678-9010,2022-01-15,manager1@company.com
+E002,Bob Smith,bob.smith@company.com,555-987-6543,987-65-4321,Marketing,75000,"456 Market Avenue",Los Angeles,CA,90001,5425-9876-5432-1098,2021-06-20,manager2@company.com
+E003,Carol Davis,carol.davis@company.com,555-456-7890,456-78-9012,Sales,85000,"789 Commerce Blvd",New York,NY,10001,4916-0123-4567-8901,2023-03-10,manager1@company.com
+E004,David Wilson,david.wilson@company.com,555-111-2222,321-54-9876,Engineering,92000,"321 Innovation Drive",Seattle,WA,98101,6011-2345-6789-0123,2022-08-05,manager1@company.com
+E005,Emma Brown,emma.brown@company.com,555-333-4444,654-32-1098,HR,68000,"654 People Plaza",Chicago,IL,60601,3782-8765-4321-0987,2020-11-12,manager3@company.com
+E006,Frank Martinez,frank.m@company.com,555-777-8888,789-01-2345,Sales,88000,"987 Revenue Road",Houston,TX,77001,5105-1055-5555-5555,2021-09-18,manager2@company.com
+E007,Grace Lee,grace.lee@company.com,555-222-3333,234-56-7890,Engineering,98000,"147 Developer Lane",Austin,TX,78701,4111-1111-1111-1111,2023-01-22,manager1@company.com
+E008,Henry Taylor,henry.taylor@company.com,555-666-7777,567-89-0123,Marketing,72000,"258 Brand Street",Boston,MA,02101,5500-0000-0000-0004,2022-04-30,manager2@company.com
+E009,Isabel Garcia,isabel.garcia@company.com,555-999-0000,890-12-3456,Sales,91000,"369 Deal Avenue",Miami,FL,33101,3400-0000-0000-009,2021-12-14,manager2@company.com
+E010,Jack Anderson,jack.anderson@company.com,555-555-5555,012-34-5678,Engineering,96000,"741 Code Boulevard",Denver,CO,80201,6011-0000-0000-0004,2023-05-01,manager1@company.com
+E011,Karen White,karen.white@company.com,555-444-3333,147-25-8369,HR,70000,"852 Benefits Way",Portland,OR,97201,4539-1234-5678-9999,2020-07-08,manager3@company.com
+E012,Leo Thompson,leo.thompson@company.com,555-888-9999,258-36-9147,Sales,87000,"963 Customer Court",Phoenix,AZ,85001,5425-8888-7777-6666,2022-10-15,manager2@company.com
+E013,Maria Rodriguez,maria.r@company.com,555-222-1111,369-14-7258,Engineering,94000,"159 System Street",San Diego,CA,92101,4916-5555-4444-3333,2023-02-28,manager1@company.com
+E014,Nathan Clark,nathan.clark@company.com,555-777-6666,741-85-2963,Marketing,76000,"357 Campaign Circle",Philadelphia,PA,19101,6011-9999-8888-7777,2021-08-20,manager2@company.com
+E015,Olivia Moore,olivia.moore@company.com,555-111-0000,852-96-3074,HR,69000,"246 Talent Terrace",Atlanta,GA,30301,3782-1111-2222-3333,2020-05-15,manager3@company.com

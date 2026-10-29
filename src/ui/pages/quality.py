@@ -258,7 +258,7 @@ def _render_issue_table(issues):
         })
 
     df_issues = pd.DataFrame(issue_data)
-    st.dataframe(df_issues, use_container_width=True, hide_index=True)
+    st.dataframe(df_issues, use_container_width=True, hide_index=True, height=300)
 
 
 def _render_column_analysis(df, profile):
@@ -299,7 +299,7 @@ def _render_numeric_analysis(df, profile):
         })
 
     df_numeric = pd.DataFrame(numeric_data)
-    st.dataframe(df_numeric, use_container_width=True, hide_index=True)
+    st.dataframe(df_numeric, use_container_width=True, hide_index=True, height=400)
 
 
 def _render_string_analysis(df, profile):
@@ -319,7 +319,7 @@ def _render_string_analysis(df, profile):
         })
 
     df_string = pd.DataFrame(string_data)
-    st.dataframe(df_string, use_container_width=True, hide_index=True)
+    st.dataframe(df_string, use_container_width=True, hide_index=True, height=400)
 
 
 def _render_all_columns_table(profile):
@@ -338,7 +338,7 @@ def _render_all_columns_table(profile):
         })
 
     df_all = pd.DataFrame(all_cols_data)
-    st.dataframe(df_all, use_container_width=True, hide_index=True)
+    st.dataframe(df_all, use_container_width=True, hide_index=True, height=400)
 
 
 def _render_data_type_distribution(profile):

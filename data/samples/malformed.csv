@@ -1,0 +1,9 @@
+id,name,email,phone,duplicate_col,duplicate_col,age
+1,Alice,alice@test.com,555-1234,value1,value2,25
+2,Bob,,555-5678,value3,value4,
+3,Charlie,charlie@test.com,,value5,value6,35
+2,Bob,bob@test.com,555-5678,value7,value8,30
+4,,,,,
+5,Eve,eve@test.com,555-9999,value9,value10,28
+6,Frank,frank@test.com,555-0000,value11,value12,
+7,Grace,grace@test.com,555-1111,value13,value14,45

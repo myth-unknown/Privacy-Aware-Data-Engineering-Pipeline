@@ -322,7 +322,7 @@ def _render_detections_table(detections, df: pd.DataFrame):
         (df_table["PII Type"].isin(filter_type)) & (df_table["Method"].isin(filter_method))
     ]
 
-    st.dataframe(filtered, use_container_width=True, hide_index=True)
+    st.dataframe(filtered, use_container_width=True, hide_index=True, height=400)
 
     if len(detections) > 100:
         st.info(f"Showing first 100 of {len(detections)} detections")

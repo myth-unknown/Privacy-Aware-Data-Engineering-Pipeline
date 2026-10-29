@@ -258,10 +258,10 @@ def _render_comparison(original_df: pd.DataFrame, anonymized_df: pd.DataFrame):
     tab1, tab2 = st.tabs(["📋 Original Data", "🎭 Anonymized Data"])
 
     with tab1:
-        st.dataframe(original_df.head(10), use_container_width=True)
+        st.dataframe(original_df.head(10), use_container_width=True, height=400)
 
     with tab2:
-        st.dataframe(anonymized_df.head(10), use_container_width=True)
+        st.dataframe(anonymized_df.head(10), use_container_width=True, height=400)
 
     # Highlight changes
     st.info(

@@ -1,0 +1,11 @@
+customer_id,name,email,phone,address,city,zip_code,ssn,credit_card,created_date
+1001,John Smith,john.smith@email.com,555-123-4567,"123 Main St, Apt 4",New York,10001,123-45-6789,4532-1234-5678-9010,2024-01-15
+1002,Emily Johnson,emily.j@company.org,555-987-6543,"456 Oak Ave",Los Angeles,90001,987-65-4321,5425-9876-5432-1098,2024-02-20
+1003,Michael Brown,m.brown@test.com,555-444-5555,"789 Pine Rd, Unit 12",Chicago,60601,456-78-9012,4916-0123-4567-8901,2024-03-10
+1004,Sarah Davis,sarah.davis@email.com,555-111-2222,"321 Elm St",Houston,77001,321-54-9876,6011-2345-6789-0123,2024-04-05
+1005,David Wilson,d.wilson@domain.com,555-333-4444,"654 Maple Dr",Phoenix,85001,654-32-1098,3782-8765-4321-0987,2024-05-12
+1006,Jessica Martinez,jess.martinez@mail.com,555-777-8888,"987 Cedar Ln",Philadelphia,19101,789-01-2345,5105-1055-5555-5555,2024-06-18
+1007,James Anderson,j.anderson@test.org,555-222-3333,"147 Birch Ave, #5",San Antonio,78201,234-56-7890,4111-1111-1111-1111,2024-07-22
+1008,Linda Thomas,linda.t@email.com,555-666-7777,"258 Spruce St",San Diego,92101,567-89-0123,5500-0000-0000-0004,2024-08-30
+1009,Robert Jackson,rob.jackson@company.com,555-999-0000,"369 Willow Ct",Dallas,75201,890-12-3456,3400-0000-0000-009,2024-09-14
+1010,Maria Garcia,maria.garcia@domain.org,555-555-5555,"741 Ash Blvd",San Jose,95101,012-34-5678,6011-0000-0000-0004,2024-10-01

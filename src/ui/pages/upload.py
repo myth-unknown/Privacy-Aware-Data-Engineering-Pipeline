@@ -199,10 +199,10 @@ def _display_data_preview(df: pd.DataFrame, result):
     tab1, tab2, tab3 = st.tabs(["First Rows", "Last Rows", "Column Info"])
 
     with tab1:
-        st.dataframe(df.head(10), use_container_width=True)
+        st.dataframe(df.head(10), use_container_width=True, height=400)
 
     with tab2:
-        st.dataframe(df.tail(10), use_container_width=True)
+        st.dataframe(df.tail(10), use_container_width=True, height=400)
 
     with tab3:
         col_info = pd.DataFrame(
@@ -214,7 +214,7 @@ def _display_data_preview(df: pd.DataFrame, result):
                 "Null %": (df.isnull().sum() / len(df) * 100).round(2),
             }
         )
-        st.dataframe(col_info, use_container_width=True)
+        st.dataframe(col_info, use_container_width=True, height=400)
 
 
 def _render_sample_data_section():
