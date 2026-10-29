@@ -137,9 +137,10 @@ def render():
     st.markdown("###  ")
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("📁 Get Started - Upload Dataset", use_container_width=True, type="primary"):
-            # Clear the navigation state and trigger rerun
-            st.session_state.navigation = "📁 Upload Dataset"
+        if st.button("📁 Get Started - Upload Dataset", use_container_width=True, type="primary", key="get_started_btn"):
+            # Set the current page in session state
+            st.session_state.current_page = "Upload"
+            # Force rerun to navigate
             st.rerun()
 
     st.markdown("---")

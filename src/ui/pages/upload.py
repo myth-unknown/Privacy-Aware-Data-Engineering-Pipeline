@@ -36,17 +36,61 @@ def render():
         """
     )
 
+    # Check if data is already uploaded
+    if "uploaded_data" in st.session_state and st.session_state.uploaded_data is not None:
+        # Show currently uploaded file
+        st.success(f"✅ File already loaded: **{st.session_state.get('uploaded_file_name', 'dataset')}**")
+        
+        # Show data summary
+        df = st.session_state.uploaded_data
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Rows", f"{len(df):,}")
+        with col2:
+            st.metric("Columns", len(df.columns))
+        with col3:
+            memory_mb = df.memory_usage(deep=True).sum() / (1024 * 1024)
+            st.metric("Memory", f"{memory_mb:.2f} MB")
+        with col4:
+            null_count = df.isnull().sum().sum()
+            st.metric("Null Values", f"{null_count:,}")
+        
+        # Show preview
+        st.subheader("📋 Data Preview")
+        st.dataframe(df.head(10), use_container_width=True, height=300)
+        
+        # Option to upload a different file
+        st.markdown("---")
+        with st.expander("📁 Upload a Different File"):
+            _render_file_uploader()
+        
+        # Sample data section
+        st.markdown("---")
+        _render_sample_data_section()
+        
+        return
+    
+    # No file uploaded yet - show uploader
+    _render_file_uploader()
+    
+    # Sample data section
+    st.markdown("---")
+    _render_sample_data_section()
+
+
+def _render_file_uploader():
+    """Render the file upload interface."""
     # File uploader
     st.subheader("1️⃣ Select File")
     uploaded_file = st.file_uploader(
         "Choose a file",
         type=["csv", "json"],
         help="Maximum file size: 100 MB",
+        key="file_uploader"
     )
 
     if uploaded_file is None:
         st.info("👆 Upload a file to get started")
-        _render_sample_data_section()
         return
 
     # Save uploaded file to temp location
@@ -121,7 +165,7 @@ def render():
                 st.session_state["scroll_to_top"] = True  # Flag to scroll to top on next page
 
                 # Clear downstream cached results when new data is uploaded
-                for key in ["quality_profile", "pii_detections", "anonymized_data"]:
+                for key in ["quality_profile", "pii_detections", "anonymized_data", "detection_results", "detection_summary"]:
                     if key in st.session_state:
                         del st.session_state[key]
 
@@ -129,6 +173,9 @@ def render():
 
             st.success("✅ Data uploaded successfully!")
             st.info("📌 Next: Go to **Data Quality** page to analyze your dataset.")
+            
+            # Auto-rerun to show the "already loaded" state
+            st.rerun()
 
         # Clean up temp file
         try:

@@ -80,11 +80,36 @@ def _render_app():
         "⚙️ Settings": "Settings",
     }
     
-    selection = st.sidebar.radio(
-        "Navigate",
-        list(pages.keys()),
-        key="navigation"
-    )
+    # Check if current_page was set programmatically (e.g., from Get Started button)
+    if 'current_page' in st.session_state:
+        # Find the key that corresponds to this page
+        page_key = None
+        for key, value in pages.items():
+            if value == st.session_state.current_page:
+                page_key = key
+                break
+        
+        if page_key:
+            # Set the default for radio to match
+            default_index = list(pages.keys()).index(page_key)
+            selection = st.sidebar.radio(
+                "Navigate",
+                list(pages.keys()),
+                index=default_index,
+                key="navigation"
+            )
+        else:
+            selection = st.sidebar.radio(
+                "Navigate",
+                list(pages.keys()),
+                key="navigation"
+            )
+    else:
+        selection = st.sidebar.radio(
+            "Navigate",
+            list(pages.keys()),
+            key="navigation"
+        )
     
     st.session_state.current_page = pages[selection]
     
